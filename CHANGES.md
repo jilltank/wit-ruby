@@ -3,6 +3,7 @@
 - Changed Wit::Error to inherit from StandardError instead of Exception
 - Moved constants inside Wit namespace
 - Moved #req and #validate_actions to private methods within Wit namespace
+- Added configuration option for confidence_threshold for minimum confidence
 
 ## v4.1.0
 

@@ -12,6 +12,7 @@ class Wit
   LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
 
   def initialize(opts = {})
+    @confidence_threshold = opts[:confidence_threshold] || 0
     @access_token = opts[:access_token]
 
     if opts[:logger]
@@ -218,7 +219,12 @@ class Wit
       }
       @actions[:send].call(request, response)
     elsif json['type'] == 'action'
-      action = json['action'].to_sym
+      # success path
+      if confidence >= @confidence_threshold
+        action = json['action'].to_sym
+      else
+        action = :low_confidence
+      end
       throw_if_action_missing(action)
       context = @actions[action].call(request)
       if context.nil?
